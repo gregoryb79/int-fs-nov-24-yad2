@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { createServer } from "http";
 
 // UI - User Interface
@@ -28,7 +29,7 @@ const server = createServer((req, res) => {
     } else if (req.method === "PUT" && req.url === "/listings") {
         // get body
         listings.push({
-            id: "11111",
+            id: randomUUID(),
             createdAt: Date.now(),
             title: "Test listing",
             price: 500,
