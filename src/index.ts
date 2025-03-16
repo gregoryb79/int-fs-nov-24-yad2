@@ -21,13 +21,20 @@ let listings: Listing[] = [];
 
 const app = express();
 
-app.get("/listings", (_, res) => {
-    res.json(listings.map((listing) => {
-        return {
-            id: listing.id,
-            title: listing.title,
-        };
-    }));
+app.get("/listings", (req, res) => {
+    const { search } = req.query;
+    const result = listings
+        .filter(({ title, description }) =>
+            typeof search !== "string" ||
+            title.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+            description && description.toLowerCase().indexOf(search.toLowerCase()) > -1
+        )
+        .map(({ id, title }) => ({
+            id,
+            title,
+        }));
+
+    res.json(result);
 });
 
 app.get("/listings/:id", (req, res) => {
@@ -48,7 +55,7 @@ app.put("/listings", (_, res) => {
     listings.push({
         id: randomUUID(),
         createdAt: Date.now(),
-        title: "Test listing",
+        title: `Test listing #${listings.length + 1}`,
         price: 500,
     });
 
