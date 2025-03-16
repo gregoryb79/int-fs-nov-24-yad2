@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { createServer } from "http";
 import express from "express";
+import { json } from "body-parser";
 
 // UI - User Interface
 // API - Application Programming Interface
@@ -25,6 +26,8 @@ app.use((req, _, next) => {
     console.log(new Date(), req.method, req.url);
     next();
 });
+
+app.use(json());
 
 app.get("/listings", (req, res) => {
     const { search } = req.query;
@@ -55,8 +58,8 @@ app.get("/listings/:id", (req, res) => {
     res.json(listing);
 });
 
-app.put("/listings", (_, res) => {
-    // get body
+app.put("/listings/:id", (req, res) => {
+    console.log(req.body);
     listings.push({
         id: randomUUID(),
         createdAt: Date.now(),
