@@ -21,6 +21,11 @@ let listings: Listing[] = [];
 
 const app = express();
 
+app.use((req, _, next) => {
+    console.log(new Date(), req.method, req.url);
+    next();
+});
+
 app.get("/listings", (req, res) => {
     const { search } = req.query;
     const result = listings
