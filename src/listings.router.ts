@@ -8,7 +8,7 @@ type Listing = {
     price: number,
 };
 
-let listings: Listing[] = [];
+export let listings: Listing[] = [];
 
 export const router = express.Router();
 
