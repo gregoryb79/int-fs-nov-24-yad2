@@ -1,5 +1,6 @@
 import * as path from "path";
 import { readFileSync } from "fs";
+import { writeFile } from "fs/promises";
 
 type Listing = {
     id: string,
@@ -11,14 +12,20 @@ type Listing = {
 
 let listings: Listing[] = load();
 
+const dataPath = path.relative(__filename, path.join(process.cwd(), "data", "listings.json"));
+
 function load() {
     try {
-        const raw = readFileSync(path.relative(__filename, path.join(process.cwd(), "data", "listings.json")), "utf8");
+        const raw = readFileSync(dataPath, "utf8");
 
         return JSON.parse(raw);
     } catch {
         return [];
     }
+}
+
+function save() {
+    return writeFile(dataPath, JSON.stringify(listings));
 }
 
 export function get() {
@@ -41,6 +48,8 @@ export function createOrUpdate(id: string, data: UpdateListingData) {
             ...data
         });
     }
+
+    return save();
 }
 
 export function remove(id: string) {
@@ -49,4 +58,6 @@ export function remove(id: string) {
     }
 
     listings = listings.filter((listing) => listing.id !== id);
+
+    return save();
 }

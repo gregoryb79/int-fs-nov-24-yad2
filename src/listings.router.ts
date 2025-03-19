@@ -33,21 +33,21 @@ router.get("/:id", (req, res) => {
     res.json(listing);
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
     const body = req.body;
     const { id } = req.params;
 
-    model.createOrUpdate(id, body);
+    await model.createOrUpdate(id, body);
 
     res.status(201);
     res.end();
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
     const id = req.params.id;
 
     try {
-        model.remove(id);
+        await model.remove(id);
     } catch {
         res.status(404);
         res.end();
