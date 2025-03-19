@@ -12,7 +12,7 @@ type Listing = {
 
 let listings: Listing[] = load();
 
-const dataPath = path.relative(__filename, path.join(process.cwd(), "data", "listings.json"));
+const dataPath = path.join(__dirname, "..", "data", "listings.json");
 
 function load() {
     try {
