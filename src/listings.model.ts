@@ -10,16 +10,18 @@ type Listing = {
     price: number,
 };
 
+const dataPath = path.join(__dirname, "..", "data", "listings.json");
+
 let listings: Listing[] = load();
 
-const dataPath = path.join(__dirname, "..", "data", "listings.json");
 
 function load() {
     try {
         const raw = readFileSync(dataPath, "utf8");
-
+        
         return JSON.parse(raw);
-    } catch {
+    } catch (error) {
+        console.error(error);
         return [];
     }
 }
