@@ -1,8 +1,8 @@
 import { createServer } from "http";
 import express from "express";
 import { json } from "body-parser";
-import { router as listingsRouter } from "./listings.controller";
-import { router as usersRouter } from "./users.controller";
+import { router as listingsRouter } from "./listings.router";
+import { router as usersRouter } from "./users.router";
 
 const app = express();
 
