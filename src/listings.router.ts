@@ -1,20 +1,12 @@
 import express from "express";
-
-type Listing = {
-    id: string,
-    createdAt: number,
-    title: string,
-    description?: string,
-    price: number,
-};
-
-export let listings: Listing[] = [];
+import * as model from "./listings.model";
 
 export const router = express.Router();
 
 router.get("/", (req, res) => {
     const { search } = req.query;
-    const result = listings
+    const result = model
+        .get()
         .filter(({ title, description }) =>
             typeof search !== "string" ||
             title.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
@@ -30,7 +22,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
     const { id } = req.params;
-    const listing = listings.find((l) => l.id === id);
+    const listing = model.get().find((l) => l.id === id);
 
     if (!listing) {
         res.status(404);
@@ -41,24 +33,11 @@ router.get("/:id", (req, res) => {
     res.json(listing);
 });
 
-type UpdateListingBody = Omit<Listing, "id" | "createdAt">;
-
 router.put("/:id", (req, res) => {
-    const body = req.body as UpdateListingBody;
+    const body = req.body;
     const { id } = req.params;
-    const existingListing = listings.find((listing) => listing.id === id);
 
-    if (existingListing) {
-        existingListing.title = body.title;
-        existingListing.description = body.description;
-        existingListing.price = body.price;
-    } else {
-        listings.push({
-            id,
-            createdAt: Date.now(),
-            ...body
-        });
-    }
+    model.createOrUpdate(id, body);
 
     res.status(201);
     res.end();
@@ -67,13 +46,14 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     const id = req.params.id;
 
-    if (!listings.some((listing) => listing.id === id)) {
+    try {
+        model.remove(id);
+    } catch {
         res.status(404);
         res.end();
         return;
     }
 
-    listings = listings.filter((listing) => listing.id !== id);
     res.status(204);
     res.end();
 });
