@@ -122,9 +122,9 @@ app.post("/users/:userId/messages", (req, res) => {
 
 app.get("/users/:userId/messages", (req, res) => {
     const { userId } = req.params;
-    
+
     res.json(
-        messages.find((message) => message.to === userId),
+        messages.filter((message) => message.to === userId),
     );
 });
 
