@@ -61,7 +61,7 @@ app.get("/create-listing", (req, res) => {
 </html>`);
 });
 
-app.post("/create-listing", (req, res) => {
+app.post("/create-listing", async (req, res) => {
     const { title, price, description } = req.body;
 
     if (!title) {
@@ -69,7 +69,7 @@ app.post("/create-listing", (req, res) => {
         return;
     }
 
-    listingsModel.createOrUpdate(randomUUID(), {
+    await listingsModel.createOrUpdate(randomUUID(), {
         title,
         price: Number(price),
         description
