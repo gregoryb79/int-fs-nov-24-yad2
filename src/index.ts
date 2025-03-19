@@ -26,7 +26,7 @@ app.get("/", (_, res) => {
             <h1>Listings</h1>
             <a href="/create-listing">New listing</a>
             <ul>
-                ${listings.map((listing) => `<a href="/listings/${listing.id}"><li>${listing.title}</li></a>`).join("\n")}
+                ${listingsModel.get().map((listing) => `<a href="/listings/${listing.id}"><li>${listing.title}</li></a>`).join("\n")}
             </ul>
         </body>
 </html>`);
@@ -64,7 +64,7 @@ app.get("/create-listing", (req, res) => {
 app.get("/listings/:id", (req,res) => {
     const { id } = req.params;
        
-    const listing = listings.find((listing) => listing.id === id);
+    const listing = listingsModel.get().find((listing) => listing.id === id);
     
     if (!listing) {
         res.status(404).json({ error: "No such listing" });
@@ -88,7 +88,7 @@ app.get("/listings/:id", (req,res) => {
 app.get("/listings/:id", (req,res) => {
     const { id } = req.params;
        
-    const listing = listings.find((listing) => listing.id === id);
+    const listing = listingsModel.get().find((listing) => listing.id === id);
     
     if (!listing) {
         res.status(404).json({ error: "No such listing" });
