@@ -14,17 +14,15 @@
         <input id="search" type="search" name="search" />
         <button>Search</button>
     </form>
-    <pre id="listings-raw"></pre>
     <ul id="listings"></ul>
     <script>
         fetch("/api/listings")
             .then((res) => res.json())
-            .then((data) => {
-                window["listings-raw"].textContent = JSON.stringify(data, null, 2);
-                console.log(data);
+            .then((listings) => {
+                listings.innerHTML = listings
+                    .map((listing) => `<li><a href="/listing#${listing.id}">${listing.title}</a></li>`)
+                    .join("\n");
             });
-
-        console.log("Loading...");
     </script>
 </body>
 </html>
