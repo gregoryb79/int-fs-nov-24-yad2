@@ -1,8 +1,7 @@
 import { createServer } from "http";
 import express from "express";
 import { json } from "body-parser";
-import { router as listingsRouter } from "./listings.router";
-import { router as usersRouter } from "./users.router";
+import { router as apiRouter } from "./routers/api";
 
 const app = express();
 
@@ -13,16 +12,12 @@ app.use((req, _, next) => {
 
 app.use(json());
 
-// /api/....
-// /api/listings/aaaa
-
 // / - public/index.html
 // /app.js
 // /styles.css
 // /listings
 
-app.use("/listings", listingsRouter);
-app.use("/users", usersRouter);
+app.use("/api", apiRouter);
 
 const server = createServer(app);
 
