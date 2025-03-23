@@ -1,4 +1,5 @@
 import { createServer } from "http";
+import path from "path";
 import express from "express";
 import { json } from "body-parser";
 import { router as apiRouter } from "./routers/api";
@@ -12,12 +13,11 @@ app.use((req, _, next) => {
 
 app.use(json());
 
-// / - public/index.html
-// /app.js
-// /styles.css
-// /listings
-
 app.use("/api", apiRouter);
+app.use(express.static(path.resolve(__dirname, "..", "public")));
+app.use((_, res) => {
+    res.redirect("404.html");
+});
 
 const server = createServer(app);
 
