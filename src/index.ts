@@ -13,10 +13,10 @@ app.use((req, _, next) => {
 });
 
 app.use(json());
-app.use(cookieParser());
+app.use(cookieParser(process.env.SESSION_SECRET));
 
 app.all("/login", (req, res, next) => {
-    if (req.cookies.userId) {
+    if (req.signedCookies.userId) {
         res.redirect("/");
         return;
     }
@@ -37,7 +37,8 @@ app.post("/login", (req, res) => {
     expires.setDate(expires.getDate() + 1);
 
     res.cookie("userId", "f163bb29-6794-4e0d-9619-e2706a128d0b", {
-        expires
+        expires,
+        signed: true,
     });
 
     res.end();
