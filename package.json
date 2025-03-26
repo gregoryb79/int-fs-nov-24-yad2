@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm-run-all -p dev:*",
     "dev:server": "tsx --no-check --watch src/index.ts",
-    "dev:client": "tsc --watch --project tsconfig.client.json"
+    "dev:client": "tsc --watch --project tsconfig.client.json",
+    "dev:sass": "sass --watch public"
   },
   "keywords": [],
   "author": "",
