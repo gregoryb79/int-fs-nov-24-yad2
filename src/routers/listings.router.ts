@@ -34,6 +34,12 @@ router.get("/:id", (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
+    if (!req.cookies.userId) {
+        res.status(401);
+        res.end();
+        return;
+    }
+
     const body = req.body;
     const { id } = req.params;
 
@@ -44,6 +50,11 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
+    if (!req.cookies.userId) {
+        res.status(401);
+        return;
+    }
+
     const id = req.params.id;
 
     try {
