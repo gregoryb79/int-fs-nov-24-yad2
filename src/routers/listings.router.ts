@@ -1,5 +1,6 @@
 import express from "express";
 import * as model from "../listings.model";
+import { authenticate } from "../middlewares/authenticate";
 
 export const router = express.Router();
 
@@ -33,13 +34,7 @@ router.get("/:id", (req, res) => {
     res.json(listing);
 });
 
-router.put("/:id", async (req, res) => {
-    if (!req.cookies.userId) {
-        res.status(401);
-        res.end();
-        return;
-    }
-
+router.put("/:id", authenticate, async (req, res) => {
     const body = req.body;
     const { id } = req.params;
 
@@ -49,12 +44,7 @@ router.put("/:id", async (req, res) => {
     res.end();
 });
 
-router.delete("/:id", async (req, res) => {
-    if (!req.cookies.userId) {
-        res.status(401);
-        return;
-    }
-
+router.delete("/:id", authenticate, async (req, res) => {
     const id = req.params.id;
 
     try {
