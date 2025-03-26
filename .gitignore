@@ -138,3 +138,7 @@ dist
 data/
 
 *.js
+*.js.map
+
+*.css
+*.css.map
