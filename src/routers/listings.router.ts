@@ -1,6 +1,7 @@
 import express from "express";
 import { authenticate } from "../middlewares/authenticate";
 import { Listing } from "../models/listings.model";
+import { User } from "../models/users.model";
 
 export const router = express.Router();
 
@@ -30,7 +31,9 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const listing = await Listing.findById(id);
+        const listing = await Listing
+            .findById(id)
+            .populate<{ user: typeof User }>("user");
 
         if (!listing) {
             res.status(404);
@@ -51,10 +54,14 @@ router.put("/:id", authenticate, async (req, res) => {
     try {
         const body = req.body;
         const { id } = req.params;
+        const { userId } = req.signedCookies;
 
         await Listing.findOneAndReplace(
             { _id: id },
-            body,
+            {
+                ...body,
+                user: userId,
+            },
             { upsert: true }
         )
 

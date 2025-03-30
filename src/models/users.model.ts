@@ -12,7 +12,7 @@ const schema = new Schema({
     password: {
         type: String,
         required: true,
-    },
+    }
 }, { timestamps: true });
 
 export const User = model("User", schema);
