@@ -12,7 +12,7 @@ async function app() {
     document.title = `Yad2 - ${listing.title}`;
     title.textContent = listing.title;
     createdAt.setAttribute("datetime", listing.createdAt);
-    createdAt.textContent = dateFormatter.format(listing.createdAt);
+    createdAt.textContent = dateFormatter.format(new Date(listing.createdAt));
     description.textContent = listing.description ?? "N/A";
     price.textContent = listing.price;
 }
