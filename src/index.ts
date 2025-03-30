@@ -5,7 +5,9 @@ import path from "path";
 import express from "express";
 import { json } from "body-parser";
 import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
 import { router as apiRouter } from "./routers/api";
+import { Listing } from "./models/listings.model";
 
 const app = express();
 
@@ -55,4 +57,15 @@ app.use((_, res) => {
 
 const server = createServer(app);
 
-server.listen(8090, () => console.log("Server listening on port 8090"));
+async function init() {
+    await mongoose.connect(process.env.CONNECTION_STRING!, {
+        dbName: "yad2",
+    });
+
+    const res = await Listing.find();
+    console.log(res);
+
+    server.listen(8090, () => console.log("Server listening on port 8090"));
+}
+
+init();
